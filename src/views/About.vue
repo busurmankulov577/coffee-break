@@ -1,5 +1,5 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <div class="about mt-5">
+    Here will be BREAK-LIST
   </div>
 </template>

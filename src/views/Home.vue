@@ -1,18 +1,42 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="home mt-5">
+    <h1>Welcome, {{ toUpper(name) }}</h1>
+    <router-link to="/about">About</router-link>&nbsp;
+    <button class="btn-danger " @click="Logout">Logout</button>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import {ref ,onBeforeMount} from 'vue';
+import firebase from "firebase/compat";
 
 export default {
-  name: 'Home',
-  components: {
-    HelloWorld
+  setup (){
+
+    const name = ref("")
+    onBeforeMount(() => {
+      const user = firebase.auth().currentUser;
+      if(user) {
+        name.value = user.email.split('@')[0];
+      }
+    });
+    const toUpper = (item) => {
+      return item.toUpperCase()
+    }
+    const Logout = () => {
+      firebase
+          .auth()
+          .signOut()
+          .then(() => console.log("Signed out"))
+          .catch(err => (err.message))
+    }
+
+    return {
+      name,
+      Logout,
+      toUpper
+    }
   }
 }
+
 </script>
